@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "./internal/grpc";
+option go_package = "./server/internal/grpc";
 
 package storyline;
 

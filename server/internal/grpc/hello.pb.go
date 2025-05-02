@@ -128,7 +128,7 @@ const file_proto_hello_proto_rawDesc = "" +
 	"\amessage\x18\x01 \x01(\tR\amessage\x12 \n" +
 	"\vserviceName\x18\x02 \x01(\tR\vserviceName2M\n" +
 	"\x0fGreetingService\x12:\n" +
-	"\x05Hello\x12\x17.storyline.HelloRequest\x1a\x18.storyline.HelloResponseB\x11Z\x0f./internal/grpcb\x06proto3"
+	"\x05Hello\x12\x17.storyline.HelloRequest\x1a\x18.storyline.HelloResponseB\x18Z\x16./server/internal/grpcb\x06proto3"
 
 var (
 	file_proto_hello_proto_rawDescOnce sync.Once
