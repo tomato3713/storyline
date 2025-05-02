@@ -68,6 +68,7 @@ func (x *HelloRequest) GetName() string {
 type HelloResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	ServiceName   string                 `protobuf:"bytes,2,opt,name=serviceName,proto3" json:"serviceName,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -109,15 +110,23 @@ func (x *HelloResponse) GetMessage() string {
 	return ""
 }
 
+func (x *HelloResponse) GetServiceName() string {
+	if x != nil {
+		return x.ServiceName
+	}
+	return ""
+}
+
 var File_proto_hello_proto protoreflect.FileDescriptor
 
 const file_proto_hello_proto_rawDesc = "" +
 	"\n" +
 	"\x11proto/hello.proto\x12\tstoryline\"\"\n" +
 	"\fHelloRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\")\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"K\n" +
 	"\rHelloResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2M\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\x12 \n" +
+	"\vserviceName\x18\x02 \x01(\tR\vserviceName2M\n" +
 	"\x0fGreetingService\x12:\n" +
 	"\x05Hello\x12\x17.storyline.HelloRequest\x1a\x18.storyline.HelloResponseB\x11Z\x0f./internal/grpcb\x06proto3"
 
