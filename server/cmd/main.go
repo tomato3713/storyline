@@ -70,7 +70,7 @@ func main() {
 
 func connectDatabase(ctx context.Context) (*mongo.Client, *mongo.Database, error) {
 	// MongoDBの接続URI
-	uri := "mongodb://root:example@localhost:27017"
+	uri := "mongodb://admin:password@localhost:27017"
 
 	// MongoDBクライアントのオプションを設定
 	clientOptions := options.Client().ApplyURI(uri)
