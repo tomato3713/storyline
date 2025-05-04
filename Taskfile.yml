@@ -3,7 +3,7 @@
 version: '3'
 
 tasks:
-  generate:proto:
+  generate:gqlgen:
     cmds:
-      - protoc --go_out=. --go-grpc_out=. proto/*.proto
+      - go tool gqlgen generate
     silent: false

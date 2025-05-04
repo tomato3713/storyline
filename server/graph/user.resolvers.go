@@ -6,14 +6,15 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/tomato3713/storyline/server/graph/model"
 )
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented: Users - users"))
+	return []*model.User{
+		&model.User{ID: "1", Name: "tomato3713"},
+	}, nil
 }
 
 // Query returns QueryResolver implementation.
