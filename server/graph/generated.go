@@ -228,11 +228,11 @@ var sources = []*ast.Source{
   name: String!
 }
 
-type Query {
+extend type Query {
   users: [User!]!
 }
 
-type Mutation {
+extend type Mutation {
   CreateUser(name: String!): User!
 }
 `, BuiltIn: false},
