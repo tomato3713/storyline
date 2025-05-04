@@ -9,11 +9,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Repository interface {
 	InsertUser(context.Context, *model.User) (*model.User, error)
 	GetUserByName(ctx context.Context, name string) (*model.User, error)
+	GetUserAll(ctx context.Context) ([]*model.User, error)
 }
 
 type repositoryImpl struct {
@@ -44,6 +46,36 @@ func (r *repositoryImpl) GetUserByName(ctx context.Context, name string) (*model
 		ID:   user.ID.Hex(),
 		Name: user.Name,
 	}, nil
+}
+
+func (r *repositoryImpl) GetUserAll(ctx context.Context) ([]*model.User, error) {
+	findOptions := options.Find()
+	findOptions.SetLimit(100)
+	cur, err := r.db.Collection("users").Find(ctx, bson.D{}, findOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	var users []user
+	for cur.Next(ctx) {
+		var elem user
+		if err := cur.Decode(&elem); err != nil {
+			return nil, err
+		}
+
+		users = append(users, elem)
+	}
+
+	results := make([]*model.User, len(users))
+	for i, user := range users {
+		mu := model.User{
+			ID:   user.ID.Hex(),
+			Name: user.Name,
+		}
+		results[i] = &mu
+	}
+
+	return results, nil
 }
 
 // InsertUser は、ユーザーをデータベースに挿入するメソッドです。

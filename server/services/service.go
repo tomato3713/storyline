@@ -14,6 +14,7 @@ type Services interface {
 type UserService interface {
 	CreateUserByName(ctx context.Context, name string) (*model.User, error)
 	GetUserByName(ctx context.Context, name string) (*model.User, error)
+	GetUserAll(ctx context.Context) ([]*model.User, error)
 }
 
 type services struct {

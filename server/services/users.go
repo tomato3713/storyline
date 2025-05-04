@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/tomato3713/storyline/server/model"
 	"github.com/tomato3713/storyline/server/repository"
@@ -30,4 +31,15 @@ func (u *userService) GetUserByName(ctx context.Context, name string) (*model.Us
 	}
 
 	return user, nil
+}
+
+func (u *userService) GetUserAll(ctx context.Context) ([]*model.User, error) {
+	slog.Info("begin userService.GetUserAll()")
+	users, err := u.exec.GetUserAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	slog.Info("finished userService.GetUserAll")
+	return users, nil
 }
