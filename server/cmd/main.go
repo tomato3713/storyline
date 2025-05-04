@@ -13,7 +13,9 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/tomato3713/storyline/server/graph"
+	"github.com/tomato3713/storyline/server/graph/resolver"
 	"github.com/tomato3713/storyline/server/repository"
+	"github.com/tomato3713/storyline/server/services"
 	"github.com/vektah/gqlparser/v2/ast"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -23,12 +25,15 @@ const defaultPort = "8080"
 
 func main() {
 	ctx := context.Background()
-	db, err := connectDatabase(ctx)
+	client, db, err := connectDatabase(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer client.Disconnect(ctx)
 
 	repo := repository.NewRepository(db)
+
+	services := services.New(repo)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -38,8 +43,8 @@ func main() {
 	srv := handler.New(
 		graph.NewExecutableSchema(
 			graph.Config{
-				Resolvers: &graph.Resolver{
-					Repository: repo,
+				Resolvers: &resolver.Resolver{
+					Srv: services,
 				},
 			},
 		),
@@ -63,7 +68,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
-func connectDatabase(ctx context.Context) (*mongo.Database, error) {
+func connectDatabase(ctx context.Context) (*mongo.Client, *mongo.Database, error) {
 	// MongoDBの接続URI
 	uri := "mongodb://root:example@localhost:27017"
 
@@ -73,17 +78,16 @@ func connectDatabase(ctx context.Context) (*mongo.Database, error) {
 	// クライアントを作成
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to create MongoDB client: %w", err)
+		return nil, nil, fmt.Errorf("Failed to create MongoDB client: %w", err)
 	}
-	defer client.Disconnect(ctx)
 
 	// 接続確認
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to ping MongoDB: %w", err)
+		return nil, nil, fmt.Errorf("Failed to ping MongoDB: %w", err)
 	}
 	fmt.Println("Connected to MongoDB!")
 
 	database := client.Database("storyline")
-	return database, nil
+	return client, database, nil
 }

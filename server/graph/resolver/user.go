@@ -14,7 +14,11 @@ import (
 
 // CreateUser is the resolver for the CreateUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, name string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: CreateUser - CreateUser"))
+	user, err := r.Srv.CreateUserByName(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+	return user.ToGQLModel(), nil
 }
 
 // Users is the resolver for the users field.
