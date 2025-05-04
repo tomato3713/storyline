@@ -22,3 +22,12 @@ func (u *userService) CreateUserByName(ctx context.Context, name string) (*model
 
 	return createdUser, nil
 }
+
+func (u *userService) GetUserByName(ctx context.Context, name string) (*model.User, error) {
+	user, err := u.exec.GetUserByName(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
