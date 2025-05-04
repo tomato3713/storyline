@@ -6,18 +6,26 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/tomato3713/storyline/server/graph/model"
 )
 
+// CreateUser is the resolver for the CreateUser field.
+func (r *mutationResolver) CreateUser(ctx context.Context, name string) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: CreateUser - CreateUser"))
+}
+
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	return []*model.User{
-		&model.User{ID: "1", Name: "tomato3713"},
-	}, nil
+	panic(fmt.Errorf("not implemented: Users - users"))
 }
+
+// Mutation returns MutationResolver implementation.
+func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
